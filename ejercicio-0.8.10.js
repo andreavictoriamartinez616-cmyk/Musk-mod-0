@@ -6,7 +6,6 @@ const rl = readline.createInterface({
 });
 
 function secuenciaValida(secuencia) {
-
     const pila = [];
 
     const parejas = new Map([
@@ -16,21 +15,17 @@ function secuenciaValida(secuencia) {
     ]);
 
     for (const caracter of secuencia) {
-
         if (
             caracter === "(" ||
             caracter === "[" ||
             caracter === "{"
         ) {
             pila.push(caracter);
-        }
-
-        else if (
+        } else if (
             caracter === ")" ||
             caracter === "]" ||
             caracter === "}"
         ) {
-
             if (pila.length === 0) {
                 return false;
             }
@@ -46,13 +41,35 @@ function secuenciaValida(secuencia) {
     return pila.length === 0;
 }
 
-rl.question("Introduce una secuencia: ", (secuencia) => {
+function preguntarSecuencia() {
+    rl.question(
+        "Introduce una secuencia (o escribe 'salir' para terminar): ",
+        (entrada) => {
 
-    if (secuenciaValida(secuencia)) {
-        console.log("Secuencia correcta.");
-    } else {
-        console.log("Secuencia incorrecta.");
-    }
+            if (entrada.toLowerCase() === "salir") {
+                console.log("Programa terminado. ¡Hasta luego!");
+                rl.close();
+                return;
+            }
 
-    rl.close();
-});
+            const secuencia = entrada.replace(/\s/g, "");
+
+            if (secuenciaValida(secuencia)) {
+                console.log("Secuencia correcta.");
+            } else {
+                console.log("Secuencia incorrecta.");
+            }
+
+            console.log("");
+            preguntarSecuencia();
+        }
+    );
+}
+
+console.log("=== COMPROBADOR DE SECUENCIAS ===");
+console.log(
+    "Comprueba si los paréntesis, corchetes y llaves están correctamente cerrados."
+);
+console.log("");
+
+preguntarSecuencia();
